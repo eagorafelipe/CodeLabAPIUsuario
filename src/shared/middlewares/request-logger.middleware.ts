@@ -2,8 +2,8 @@ import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
 import { NextFunction, Request, Response } from 'express';
 
 @Injectable()
-export class LoggerMiddleware implements NestMiddleware {
-  private readonly logger = new Logger(LoggerMiddleware.name);
+export class RequestLoggerMiddleware implements NestMiddleware {
+  private readonly logger = new Logger(RequestLoggerMiddleware.name);
   use(req: Request, res: Response, next: NextFunction) {
     this.logger.log('***********REQ-INFO************');
     this.logger.log('IP: ' + req.ip);

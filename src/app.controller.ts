@@ -11,6 +11,8 @@ export class AppController {
   async getHello(): Promise<IResponse<string>> {
     const data = await this.appService.getHello();
 
-    return new HttpResponse<string>(data).onSuccess('Hello World!');
+    return new HttpResponse<string>(data).onSuccess(
+      'Hello, CodeLabApiUsuario!',
+    );
   }
 }

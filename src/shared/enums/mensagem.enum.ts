@@ -1,5 +1,8 @@
 export enum EMensagem {
   DeveSerVazio = 'Deve ser vazio',
+  IDsDiferentes = 'Os IDs informados são diferentes',
+  ImpossivelAlterar = 'Impossível alterar o cadastro',
+  ImpossivelDesativar = 'Impossivel desativar o cadastro',
   NaoPodeSerVazio = 'Não pode ser vazio',
   NaoValido = 'Não válido',
   MaisCaracteresQuePermitido = 'Possui mais caracteres que o permitido',

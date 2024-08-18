@@ -12,10 +12,10 @@ export class UsuarioService {
   private readonly repository: Repository<Usuario>;
 
   async create(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
-    const usuario = await this.repository.findOne({
+    const findedUsuario = await this.repository.findOne({
       where: { email: createUsuarioDto.email },
     });
-    if (usuario) {
+    if (findedUsuario) {
       throw new HttpException(
         EMensagem.ImpossivelCadastrar,
         HttpStatus.NOT_ACCEPTABLE,
@@ -26,19 +26,42 @@ export class UsuarioService {
     return await this.repository.save(createUsuario);
   }
 
-  findAll() {
-    return `This action returns all usuario`;
+  async findAll(page: number, size: number): Promise<Usuario[]> {
+    page--;
+    return await this.repository.find({
+      loadEagerRelations: false,
+      skip: size * page || 0,
+      take: size || 10,
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} usuario`;
+  async findOne(id: number): Promise<Usuario> {
+    return await this.repository.findOneBy({ id });
   }
 
-  update(id: number, updateUsuarioDto: UpdateUsuarioDto) {
-    return `This action updates a #${id} usuario`;
-  }
+  async update(
+    id: number,
+    updateUsuarioDto: UpdateUsuarioDto,
+  ): Promise<Usuario> {
+    if (id !== updateUsuarioDto.id) {
+      throw new HttpException(
+        EMensagem.IDsDiferentes,
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} usuario`;
+    return await this.repository.save(updateUsuarioDto);
+  }
+  async unactivate(id: number): Promise<boolean> {
+    const findedUsuario = await this.repository.findOneBy({ id });
+    if (!findedUsuario) {
+      throw new HttpException(
+        EMensagem.ImpossivelDesativar,
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
+
+    findedUsuario.ativo = false;
+    return (await this.repository.save(findedUsuario)).ativo;
   }
 }

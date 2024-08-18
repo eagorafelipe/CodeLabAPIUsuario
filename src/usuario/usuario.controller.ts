@@ -20,9 +20,9 @@ export class UsuarioController {
     return this.usuarioService.create(createUsuarioDto);
   }
 
-  @Get()
-  findAll() {
-    return this.usuarioService.findAll();
+  @Get(':page/:size')
+  findAll(@Param('page') page: number, @Param('size') size: number) {
+    return this.usuarioService.findAll(page, size);
   }
 
   @Get(':id')
@@ -36,7 +36,7 @@ export class UsuarioController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usuarioService.remove(+id);
+  unactivate(@Param('id') id: string) {
+    return this.usuarioService.unactivate(+id);
   }
 }

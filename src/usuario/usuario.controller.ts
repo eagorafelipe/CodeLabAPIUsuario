@@ -10,14 +10,20 @@ import {
 import { UsuarioService } from './usuario.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { IResponse } from 'src/shared/interfaces/response.interface';
+import { Usuario } from './entities/usuario.entity';
+import { HttpResponse } from 'src/shared/classes/http-response';
 
 @Controller('usuario')
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) {}
 
   @Post()
-  create(@Body() createUsuarioDto: CreateUsuarioDto) {
-    return this.usuarioService.create(createUsuarioDto);
+  async create(
+    @Body() createUsuarioDto: CreateUsuarioDto,
+  ): Promise<IResponse<Usuario>> {
+    const usuario = await this.usuarioService.create(createUsuarioDto);
+    return new HttpResponse<Usuario>(usuario).onCreated();
   }
 
   @Get(':page/:size')
@@ -31,12 +37,17 @@ export class UsuarioController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
-    return this.usuarioService.update(+id, updateUsuarioDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateUsuarioDto: UpdateUsuarioDto,
+  ): Promise<IResponse<Usuario>> {
+    const usuario = await this.usuarioService.update(+id, updateUsuarioDto);
+    return new HttpResponse<Usuario>(usuario).onUpdated();
   }
 
   @Delete(':id')
-  unactivate(@Param('id') id: string) {
-    return this.usuarioService.unactivate(+id);
+  async unactivate(@Param('id') id: string): Promise<IResponse<boolean>> {
+    const deleted = await this.usuarioService.unactivate(+id);
+    return new HttpResponse<boolean>(deleted).onUnactivated();
   }
 }

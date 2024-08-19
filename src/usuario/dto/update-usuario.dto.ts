@@ -4,6 +4,6 @@ import { IsNotEmpty } from 'class-validator';
 import { EMensagem } from 'src/shared/enums/mensagem.enum';
 
 export class UpdateUsuarioDto extends PartialType(CreateUsuarioDto) {
-  @IsNotEmpty({ message: `ID ${EMensagem.NaoPodeSerVazio}` })
+  @IsNotEmpty({ message: `ID ${EMensagem.DeveSerInformado}` })
   id: number;
 }

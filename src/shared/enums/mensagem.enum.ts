@@ -1,4 +1,5 @@
 export enum EMensagem {
+  DeveSerInformado = 'Deve ser informado',
   DeveSerVazio = 'Deve ser vazio',
   IDsDiferentes = 'Os IDs informados são diferentes',
   ImpossivelAlterar = 'Impossível alterar o cadastro',

@@ -4,7 +4,9 @@ import { resolve } from 'path';
 import { DataSourceOptions } from 'typeorm';
 
 const ENV = !process.env.NODE_ENV ? '.env' : `.env.${process.env.NODE_ENV}`;
-const path = resolve(__dirname, `../../../${ENV}`);
+
+const path = resolve(__dirname, `../${ENV}`);
+
 const envConfig = dotenv.parse(readFileSync(path));
 
 for (const k in envConfig) {
@@ -21,11 +23,11 @@ const typeOrmConfig: DataSourceOptions & {
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
-  entities: [__dirname + '/../../**/*.entity{.ts,.js}'],
-  seeds: [__dirname + '/../../../seeds/**/*{.ts,.js}'],
-  factories: [__dirname + '/../../../factories/**/*{.ts,.js}'],
-  synchronize: process.env.DB_SYNCHRONIZE === 'true' ? true : false,
+  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
   logging: true,
+  synchronize: process.env.DB_SYNCRONIZE === 'true' ? true : false,
+  seeds: [__dirname + '/../**/*.seed{.ts,.js}'],
+  factories: [__dirname + '/../**/*.factory{.ts,.js}'],
 };
 
-export default typeOrmConfig;
+export = typeOrmConfig;

@@ -20,6 +20,7 @@ import { IFindAllOrder } from 'src/shared/interfaces/find-all-order.interface';
 import { ParseFindAllOrder } from 'src/shared/pipes/parse-find-all-order.pipe';
 import { ParseFindAllFilter } from 'src/shared/pipes/parse-find-all-filter.pipe';
 import { AlterarSenhaUsuarioDto } from './dto/alterar-senha-usuario.dto';
+import { GrpcMethod } from '@nestjs/microservices';
 
 @Controller('usuario')
 export class UsuarioController {
@@ -74,5 +75,10 @@ export class UsuarioController {
   ): Promise<IResponse<boolean>> {
     const data = await this.usuarioService.alterarSenha(alterarSenhaUsuarioDto);
     return new HttpResponse<boolean>(data).onUpdated();
+  }
+
+  @GrpcMethod('UsuarioService', 'FindOne')
+  async findOneGrpc(data: { id: string }): Promise<Usuario> {
+    return this.usuarioService.findOneGrpc(+data.id);
   }
 }

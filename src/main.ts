@@ -4,6 +4,9 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ResponseExceptionsFilter } from './shared/filters/response-exception.filter';
 import { ResponseTransformInterceptor } from './shared/interceptors/response-transform.interceptor';
+import { MicroserviceOptions } from '@nestjs/microservices';
+import { grpcConfig } from './config/grpc/grpc.config';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -13,6 +16,9 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ResponseTransformInterceptor());
   app.useGlobalFilters(new ResponseExceptionsFilter());
   app.enableCors();
+  app.connectMicroservice<MicroserviceOptions>(
+    grpcConfig('usuario', 'GRPC_USUARIO', app.get(ConfigService)),
+  );
 
   setupOpenAPI(app);
 

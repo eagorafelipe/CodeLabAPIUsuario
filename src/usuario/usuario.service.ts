@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EMensagem } from 'src/shared/enums/mensagem.enum';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { Usuario } from './entities/usuario.entity';
@@ -25,8 +26,10 @@ export class UsuarioService {
       );
     }
 
-    const createUsuario = this.repository.create(createUsuarioDto);
-    return await this.repository.save(createUsuario);
+    const usuario = new Usuario(createUsuarioDto);
+    usuario.senha = bcrypt.hashSync(usuario.senha);
+    const created = this.repository.create(usuario);
+    return await this.repository.save(created);
   }
 
   async findAll(
@@ -61,6 +64,7 @@ export class UsuarioService {
       );
     }
 
+    updateUsuarioDto.senha = bcrypt.hashSync(updateUsuarioDto.senha);
     return await this.repository.save(updateUsuarioDto);
   }
   async unactivate(id: number): Promise<boolean> {

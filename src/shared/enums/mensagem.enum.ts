@@ -14,4 +14,6 @@ export enum EMensagem {
   FilterInvalido = 'Filter inválido',
   OrderInvalido = 'Order inválido',
   SalvoSucesso = 'Salvo com sucesso',
+  AutenticadoSucesso = 'Autenticado com sucesso',
+  UsuarioSenhaInvalido = 'Usuario e/ou senha inválidos',
 }

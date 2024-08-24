@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './config/database/database.module';
 import { LoggerMiddleware } from './shared/middleware/logger.middleware';
 import { UsuarioModule } from './usuario/usuario.module';
+import { AuthModule } from './core/auth/auth.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UsuarioModule } from './usuario/usuario.module';
       isGlobal: true,
     }),
     DatabaseModule,
+    AuthModule,
     UsuarioModule,
   ],
   controllers: [AppController],

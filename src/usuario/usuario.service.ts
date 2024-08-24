@@ -9,11 +9,20 @@ import { Usuario } from './entities/usuario.entity';
 import { IFindAllFilter } from 'src/shared/interfaces/find-all-filter.interface';
 import { IFindAllOrder } from 'src/shared/interfaces/find-all-order.interface';
 import { handleFilter } from 'src/shared/helpers/sql.helper';
+import { UsuarioPermissao } from './entities/usuario-permissao.entity';
+import { RecuperacaoSenha } from 'src/core/recuperacao-senha/entities/recuperacao-senha.entity';
+import { AlterarSenhaUsuarioDto } from './dto/alterar-senha-usuario.dto';
 
 @Injectable()
 export class UsuarioService {
   @InjectRepository(Usuario)
   private readonly repository: Repository<Usuario>;
+
+  @InjectRepository(UsuarioPermissao)
+  private readonly permissaoRepository: Repository<UsuarioPermissao>;
+
+  @InjectRepository(RecuperacaoSenha)
+  private readonly recuperacaoSenhaRepository: Repository<RecuperacaoSenha>;
 
   async create(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
     const findedUsuario = await this.repository.findOne({
@@ -64,7 +73,13 @@ export class UsuarioService {
       );
     }
 
+    await this.permissaoRepository.delete({ idUsuario: id });
+    for (const permissao in updateUsuarioDto.permissao) {
+      Object.assign(updateUsuarioDto.permissao[permissao], { idUsuario: id });
+    }
+
     updateUsuarioDto.senha = bcrypt.hashSync(updateUsuarioDto.senha);
+
     return await this.repository.save(updateUsuarioDto);
   }
   async unactivate(id: number): Promise<boolean> {
@@ -78,5 +93,44 @@ export class UsuarioService {
 
     findedUsuario.ativo = false;
     return (await this.repository.save(findedUsuario)).ativo;
+  }
+
+  async alterarSenha(
+    alterarSenhaUsuarioDto: AlterarSenhaUsuarioDto,
+  ): Promise<boolean> {
+    const findedToken = await this.recuperacaoSenhaRepository.findOne({
+      where: {
+        email: alterarSenhaUsuarioDto.email,
+        id: alterarSenhaUsuarioDto.token,
+      },
+    });
+
+    if (!findedToken) {
+      throw new HttpException(
+        EMensagem.ImpossivelAlterar,
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
+
+    const msInHoras = 60 * 60 * 100;
+    const diffHoras =
+      Math.abs(Number(new Date()) - Number(findedToken.dataCriacao)) /
+      msInHoras;
+
+    if (diffHoras > 24) {
+      throw new HttpException(
+        EMensagem.TokenInvalido,
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+    }
+
+    const usuario = await this.repository.findOne({
+      where: { email: alterarSenhaUsuarioDto.email },
+    });
+    usuario.senha = bcrypt.hashSync(alterarSenhaUsuarioDto.senha);
+    await this.repository.save(usuario);
+    await this.recuperacaoSenhaRepository.delete({ id: findedToken.id });
+
+    return true;
   }
 }

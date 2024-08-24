@@ -16,4 +16,7 @@ export enum EMensagem {
   SalvoSucesso = 'Salvo com sucesso',
   AutenticadoSucesso = 'Autenticado com sucesso',
   UsuarioSenhaInvalido = 'Usuario e/ou senha inválidos',
+  VerifiqueEnderecoEmailInformado = 'Verifique o endereço de e-mail informado',
+  TokenInvalido = 'Token Inválido',
+  TipoInvalido = 'Tipo Inválido',
 }

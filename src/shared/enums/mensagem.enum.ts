@@ -19,4 +19,5 @@ export enum EMensagem {
   VerifiqueEnderecoEmailInformado = 'Verifique o endereço de e-mail informado',
   TokenInvalido = 'Token Inválido',
   TipoInvalido = 'Tipo Inválido',
+  NaoFoiPossivelObterCredencial = 'Não foi possível obter a credencial',
 }

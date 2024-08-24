@@ -1,28 +1,28 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  Query,
+  Get,
+  Param,
+  Patch,
+  Post,
   Put,
+  Query,
 } from '@nestjs/common';
-import { UsuarioService } from './usuario.service';
-import { CreateUsuarioDto } from './dto/create-usuario.dto';
-import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-import { IResponse } from 'src/shared/interfaces/response.interface';
-import { Usuario } from './entities/usuario.entity';
+import { GrpcMethod } from '@nestjs/microservices';
 import { HttpResponse } from 'src/shared/classes/http-response';
 import { IFindAllFilter } from 'src/shared/interfaces/find-all-filter.interface';
 import { IFindAllOrder } from 'src/shared/interfaces/find-all-order.interface';
-import { ParseFindAllOrder } from 'src/shared/pipes/parse-find-all-order.pipe';
+import { IResponse } from 'src/shared/interfaces/response.interface';
 import { ParseFindAllFilter } from 'src/shared/pipes/parse-find-all-filter.pipe';
+import { ParseFindAllOrder } from 'src/shared/pipes/parse-find-all-order.pipe';
 import { AlterarSenhaUsuarioDto } from './dto/alterar-senha-usuario.dto';
-import { GrpcMethod } from '@nestjs/microservices';
+import { CreateUsuarioDto } from './dto/create-usuario.dto';
+import { UpdateUsuarioDto } from './dto/update-usuario.dto';
+import { Usuario } from './entities/usuario.entity';
+import { UsuarioService } from './usuario.service';
 
-@Controller('usuario')
+@Controller()
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) {}
 

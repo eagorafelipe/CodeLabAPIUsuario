@@ -5,9 +5,9 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { AppModule } from 'src/app.module';
 import { EMensagem } from 'src/shared/enums/mensagem.enum';
 import { ResponseExceptionsFilter } from 'src/shared/filters/response-exception.filter';
-import { Usuario } from 'src/usuario/entities/usuario.entity';
 import request from 'supertest';
 import { Repository } from 'typeorm';
+import { Usuario } from '../src/core/usuario/entities/usuario.entity';
 
 describe('Usuário (e2e)', () => {
   let app: INestApplication;

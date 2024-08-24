@@ -3,9 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './config/database/database.module';
-import { LoggerMiddleware } from './shared/middleware/logger.middleware';
-import { UsuarioModule } from './usuario/usuario.module';
 import { AuthModule } from './core/auth/auth.module';
+import { UsuarioModule } from './core/usuario/usuario.module';
+import { LoggerMiddleware } from './shared/middleware/logger.middleware';
 
 @Module({
   imports: [

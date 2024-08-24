@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
+import { ILoginPayload } from 'src/shared/interfaces/login-payload.interface';
 import { Repository } from 'typeorm';
 import { EMensagem } from '../../shared/enums/mensagem.enum';
+import { Usuario } from '../usuario/entities/usuario.entity';
 import { LoginDto } from './dto/login.dto';
-import { ILoginPayload } from 'src/shared/interfaces/login-payload.interface';
-import { Usuario } from 'src/usuario/entities/usuario.entity';
 
 @Injectable()
 export class AuthService {

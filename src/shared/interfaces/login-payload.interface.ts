@@ -1,4 +1,4 @@
-import { UsuarioPermissao } from 'src/usuario/entities/usuario-permissao.entity';
+import { UsuarioPermissao } from '../../core/usuario/entities/usuario-permissao.entity';
 
 export interface ILoginPayload {
   id: number;

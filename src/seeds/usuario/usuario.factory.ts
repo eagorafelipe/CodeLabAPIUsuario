@@ -1,7 +1,7 @@
-import { CreateUsuarioDto } from 'src/usuario/dto/create-usuario.dto';
-import { Usuario } from 'src/usuario/entities/usuario.entity';
-import { define } from 'typeorm-seeding';
 import { fakerPT_BR as faker } from '@faker-js/faker';
+import { define } from 'typeorm-seeding';
+import { CreateUsuarioDto } from '../../core/usuario/dto/create-usuario.dto';
+import { Usuario } from '../../core/usuario/entities/usuario.entity';
 
 define(Usuario, () => {
   const usuario = new CreateUsuarioDto();

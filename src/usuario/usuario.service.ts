@@ -1,10 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { EMensagem } from 'src/shared/enums/mensagem.enum';
+import { Repository } from 'typeorm';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from './entities/usuario.entity';
-import { Repository } from 'typeorm';
-import { EMensagem } from 'src/shared/enums/mensagem.enum';
+import { IFindAllFilter } from 'src/shared/interfaces/find-all-filter.interface';
+import { IFindAllOrder } from 'src/shared/interfaces/find-all-order.interface';
+import { handleFilter } from 'src/shared/helpers/sql.helper';
 
 @Injectable()
 export class UsuarioService {
@@ -26,12 +29,20 @@ export class UsuarioService {
     return await this.repository.save(createUsuario);
   }
 
-  async findAll(page: number, size: number): Promise<Usuario[]> {
+  async findAll(
+    page: number,
+    size: number,
+    order: IFindAllOrder,
+    filter?: IFindAllFilter | IFindAllFilter[],
+  ): Promise<Usuario[]> {
     page--;
+    const where = handleFilter(filter);
     return await this.repository.find({
       loadEagerRelations: false,
-      skip: size * page || 0,
-      take: size || 10,
+      order: { [order.column]: order.sort },
+      where,
+      skip: size * page,
+      take: size,
     });
   }
 

@@ -10,9 +10,8 @@
 *.df            text
 *.htm           text
 *.html          text
-*.form          text    eol=crlf
-*.java          text    eol=crlf
-*.js            text
+*.js            text    eol=crlf
+*.ts            text    eol=crlf
 *.json          text
 *.jsp           text
 *.jspf          text
@@ -72,11 +71,10 @@
 *.eps binary
 
 
-*.java          diff=java
 *.php           diff=php
 *.py            diff=python
-.js             diff=javascript
-.ts             diff=typescript
+*.js            diff=javascript
+*.ts            diff=typescript
 
 #
 # Exclude files from exporting

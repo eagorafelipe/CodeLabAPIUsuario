@@ -1,9 +1,9 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { ResponseExceptionsFilter } from 'src/shared/filters/response-exception.filter';
+import { ResponseTransformInterceptor } from 'src/shared/interceptors/response-transform.interceptor';
 import request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { ResponseTransformInterceptor } from 'src/shared/interceptors/response-transform.interceptor';
-import { ResponseExceptionsFilter } from 'src/shared/filters/response-exception.filter';
 
 describe('ApiUsuario (e2e)', () => {
   let app: INestApplication;

@@ -1,0 +1,34 @@
+name: build
+
+on:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name: setup up docker container
+        uses: docker/setu-buildx-action@v2
+
+      - name: build and run docker container
+        run: dcoker-compose -d docker-compose-test.yml up -d --build
+
+      - name: wait for postgresql to be ready
+        run: |
+          until docker-compose exec db-usuario-test pg_isready -U postgres -p 5001; do
+            sleep 5;
+          done
+
+      - name: run tests coverage
+        run: docker-compose exec api-usuario-test npm run test:cov
+
+      - name: run tests e2e coverage
+        run: docker-compose exec api-usuario-test npm run test:e2e:cov
+
+      - name: stop docker container
+        if: always()
+        run: docker-compose down
